@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%=render "_head.html.erb"%>
+
+<body>
+<%=render "_header.html.erb"%>
+
+    <!-- ##### Welcome Area Start ##### -->
+    <section class="welcome_area bg-img background-overlay" style="background-image: url(http://www.extravaganzi.com/wp-content/uploads/2011/07/The-auction-shot-with-Henry-Wyndham-selling-the-Francesco-Guardis-Venetian-masterpiece.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="hero-content">
+                        <h6>11 mei 2019</h6>
+                        <h2>Kunstveiling Goeree-Overflakkee</h2>
+                        <a href="#veiling-collectie" class="btn essence-btn">Bekijk de collectie</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Welcome Area End ##### -->
+
+    <!-- ##### Top Catagory Area Start ##### -->
+    <div id="veiling-collectie" class="top_catagory_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row justify-content-center">
+<%categories.each do |category,value|%>
+                <!-- Single Catagory -->                
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url(img/bg-img/<%=category%>.jpg);">
+                        <div class="catagory-content">
+                            <a href="<%=sanitize_filename category%>.html"><%=category%></a>
+                        </div>
+                    </div>
+                </div>
+<%end%>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Top Catagory Area End ##### -->
+
+    <!-- ##### CTA Area Start ##### 
+    <div class="cta-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="cta-content bg-img background-overlay" style="background-image: url(img/bg-img/bg-5.jpg);">
+                        <div class="h-100 d-flex align-items-center justify-content-end">
+                            <div class="cta--text">
+                                <h6>-60%</h6>
+                                <h2>Global Sale</h2>
+                                <a href="#" class="btn essence-btn">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### CTA Area End ##### -->
+
+<%=render "_sponsor.html.erb"%>
+<%=render "_footer.html.erb"%>
+<%=render "_scripts.html.erb"%>
+
+</body>
+
+</html>

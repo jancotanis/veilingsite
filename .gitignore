@@ -1,0 +1,5 @@
+.DS_Store
+generator/assets/**
+generator/site1/**
+generator/templates/essence/*
+site.zip

@@ -2,10 +2,7 @@
 require 'erb'
 require './Lot.rb'
 
-ROOT = "./data/"
-
-
-Page = Struct.new(:prev,:next)
+Page = Struct.new(:title,:include)
 
 class SiteGenerator
 	attr_reader :categories
@@ -15,10 +12,12 @@ class SiteGenerator
 		@dir = template_dir
 		@site = site_dir
 		@categories = @db.categories
+		@pageinfo = nil
 	end
 
 	def generate_index
 		file = "index.html"
+		@pageinfo = Page.new( "Lions Club", file )
 		t = load_template "#{file}.erb"
 		puts " File: #{file}"
 		File::open( "#{@site}#{file}", "w" ) do |f|
@@ -30,6 +29,7 @@ class SiteGenerator
 		t = load_template "category.html.erb"
 		@categories.each do |category, lots|
 			file = sanitize_filename( "#{category}.html" )
+			@pageinfo = Page.new( category, file )
 			puts " Category: #{file}"
 			File::open( "#{@site}#{file}", "w" ) do |f|
 				f.write t.result( binding )
@@ -39,16 +39,25 @@ class SiteGenerator
 
 	def generate_lots
 		t = load_template "lot.html.erb"
-		page = Page.new( "/", "/" )
-
 		@db.lots.each_with_index do |lot, i|
-			page.next = (i+1 < @db.lots.count) ? sanitize_filename( @db.lots[i+1].id ) : "/"
 			file = sanitize_filename lot.id
+			@pageinfo = Page.new( lot.title, file )
 			puts " Lot: #{file}"
+			file( "#{@site}#{file}" ) do |f|
+				f.write t.result( binding )
+			end
+		end
+	end
+
+	def generate_static pages
+		t = load_template "static-page.html.erb"
+		pages.each do |p|
+			@pageinfo = Page.new( p.capitalize, "static-#{p}.html" )
+			file = "#{p}.html"
+			puts " Page: #{file}"
 			File::open( "#{@site}#{file}", "w" ) do |f|
 				f.write t.result( binding )
 			end
-			page.prev = file
 		end
 	end
 
@@ -57,11 +66,6 @@ class SiteGenerator
 		t.result( binding )
 	end
 
-private
-	def load_template file
-		ERB.new( File.read( File.expand_path( "#{@dir}#{file}" ) ) )
-	end
-	
 	def sanitize_filename(filename)
 		name = filename.strip
 		# NOTE: File.basename doesn't work right with Windows paths on Unix
@@ -72,21 +76,42 @@ private
 		name.gsub!( /[^0-9A-Za-z.\-]/, '-' )
 		name
 	end
+
+private
+
+	def file name, &block
+		File::open( name, "w" ) do |f|
+			block.call( f )
+		end
+	end
+
+	def load_template file
+		file = "#{@dir}#{file}" unless File.exists?( file )
+		ERB.new( File.read( File.expand_path( file ) ) )
+	end
+	
 end
 
+# defaults
+assets_dir = "./assets/"
+db_name = "Kunstveiling-veilinginput.txt"
+template_dir = "./templates/"
+site_dir = "../"
+# override fromthe command line
+assets_dir = ARGV[0] if ARGV.count > 0
+db_name = ARGV[1] if ARGV.count > 1
+template_dir = ARGV[2] if ARGV.count > 2
+site_dir = ARGV[3] if ARGV.count > 3
 
-db = LotParser.new( "#{ROOT}", "Kunstveiling-veilinginput.txt" )
+puts "SiteGenerator [assets] [db] [templates] [site]"
+db = LotParser.new( assets_dir, db_name )
 db.stats
-sg = SiteGenerator.new( db, "./templates/", "../site/" )
+sg = SiteGenerator.new( db, template_dir, site_dir )
 # index.html
 sg.generate_index
 # voorwaarden.html
-# sponsors.html
-# all lots
-sg.generate_lots
+sg.generate_static ["voorwaarden","about","doel","contact","sponsor"]
 # all categories
 sg.generate_categories
-
-#    Book     = Struct.new(:title, :author#)
-#    template = ERB.new(File.read('template.erb'))
-#    template.result_with_hash(books: [Book.new("test"), Book.new("abc")])
+# all lots
+sg.generate_lots

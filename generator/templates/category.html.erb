@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%=render "_head.html.erb"%>
+
+<body>
+<%=render "_header.html.erb"%>
+
+    <!-- ##### Welcome Area Start ##### >
+    <section class="welcome_area bg-img background-overlay" style="background-image: url(http://www.extravaganzi.com/wp-content/uploads/2011/07/The-auction-shot-with-Henry-Wyndham-selling-the-Francesco-Guardis-Venetian-masterpiece.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="hero-content">
+                        <h6>subtitel</h6>
+                        <h2>Titel text</h2>
+                        <a href="#" class="btn essence-btn">Bekijk de collectie</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Welcome Area End ##### -->
+
+    <!-- ##### Top Catagory Area Start ##### -->
+    <div class="top_catagory_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row justify-content-center">
+<%lots.each do |lot|%>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url('<%=lot.photos[0]%>');">
+                        <div class="catagory-content">
+                            <a href="<%=sanitize_filename lot.id%>"><%=lot.title%></a>
+                            <%=lot.artist%>
+                        </div>
+                    </div>
+                </div>
+<%end%>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Top Catagory Area End ##### -->
+
+<%=render "_footer.html.erb"%>
+<%=render "_scripts.html.erb"%>
+
+</body>
+
+</html>

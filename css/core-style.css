@@ -1648,7 +1648,7 @@ img {
     font-size: 30px;
     line-height: 1.5;
     margin-bottom: 50px; }
-  .regular-page-content-wrapper .regular-page-text p {
+  .regular-page-content-wrapper .regular-page-text p,.regular-page-content-wrapper .regular-page-text ul {
     font-size: 18px;
     font-weight: 300;
     margin-bottom: 50px; }
@@ -1742,7 +1742,7 @@ img {
         display: inline-block;
         text-transform: uppercase; }
       .contact-area .contact-info .contact-address p:last-child {
-        margin-top: 100px; }
+        margin-top: 10px; /*was 100*/}
         .contact-area .contact-info .contact-address p:last-child a {
           font-size: 14px;
           font-weight: 300; }

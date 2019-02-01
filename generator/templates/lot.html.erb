@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%=render "_head.html.erb"%>
+
+<body>
+<%=render "_header.html.erb"%>
+    <!-- ##### Single Product Details Area Start ##### -->
+    <section class="single_product_details_area d-flex align-items-center">
+
+        <!-- Single Product Thumb -->
+        <div class="single_product_thumb clearfix">
+            <div class="product_thumbnail_slides owl-carousel">
+<%
+lot.photos.each_with_index do |photo,i|
+%>
+                <img src="<%=photo%>" alt="">
+<%
+end
+if lot.photos.count == 1
+%>
+                <img src="<%=lot.photos[0]%>" alt="">
+<%
+end
+%>
+            </div>
+        </div>
+
+        <!-- Single Product Description -->
+        <div class="single_product_desc clearfix">
+            <span><%= lot.artist %></span>
+            <a href="#">
+                <h2><%= lot.title %></h2>
+            </a>
+			<p class="product-desc"><%=lot.year%></p>
+            <p class="product-price"><!--span class="old-price"></span-->&euro; <%=lot.price%></p>
+            <p class="product-desc"><%=lot.text%></p>
+        </div>
+    </section>
+    <!-- ##### Single Product Details Area End ##### -->
+
+<%=render "_footer.html.erb"%>
+<%=render "_scripts.html.erb"%>
+
+</body>
+
+</html>
