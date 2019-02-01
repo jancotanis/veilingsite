@@ -8,13 +8,16 @@ CONTRIBUTION_NR = "Inbreng #"
 TITLE = "Titel"
 ARTIST = "Kunstenaar"
 LINK = "Link"
-PRICE = "Prijs"
+PRICE = "Prijs €"
 CATEGORY = "Soort"
-TEXT = "Text"
 YEAR = "Jaartal"
-DESCRIPTION = "Verhaaltje"
+DESCRIPTION = "Tekst + link"
 
+MISSING_PHOTO = "./assets/coming-soon.jpg"
 
+# set default encoding and do an encode on the input file from excel to get correct extended characters
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
 # Tab Seperated Values
 class TSV
   attr_reader :filepath
@@ -23,10 +26,11 @@ class TSV
   end
 
   def parse
-    open(filepath) do |f|
-      headers = f.gets.strip.split("\t")
+  #,"r:cp850"
+    File::open( filepath, "r" ) do |f|
+      headers = f.gets.encode("UTF-8", "Windows-1252").strip.split("\t")
       f.each do |line|
-        fields = Hash[headers.zip(line.chop.split("\t"))]
+        fields = Hash[headers.zip(line.encode("UTF-8", "Windows-1252").chop.split("\t"))]
         yield fields
       end
     end
@@ -47,16 +51,11 @@ class Record
 	end
 end
 
-class Photo < Record
-	def initialize( file )
-		@file = file
-		super( { :file=>file} )
-	end
-end
-
 class Lot < Record
 	attr_reader :lot, :contribution, :artist, :link, :title, :year, :price, :text, :photos, :category
 	def initialize lot, contribution, artist, link, title, category, year, price, text, photos=[]
+	
+		title = "?" if title.empty?
 		@lot = lot
 		@contribution = contribution
 		@artist = artist
@@ -101,12 +100,14 @@ class LotParser
 		# fields:
 		tsv.parse do |row|
 			begin
-				
-				if  row[CONTRIBUTION_NR]
+				if row[ARTIST] && !row[CONTRIBUTION_NR].empty?
 					photos = find_photos( path, row[CONTRIBUTION_NR] )
 					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE], row[CATEGORY], row[YEAR], row[PRICE], row[DESCRIPTION], photos )
+					puts lot.json
 					@lots << lot
-					@categories[row[CATEGORY]] << lot
+					cat = row[CATEGORY]
+					cat = "onbekend" if cat.empty?
+					@categories[cat] << lot
 				end
 			rescue
 				puts row
@@ -124,8 +125,9 @@ class LotParser
 
 	private
 	def find_photos path="./", id
-		Dir["#{path}#{id}-*.*"]
+		photos = Dir["#{path}#{id}-*.*"]
+		photos = [MISSING_PHOTO] if photos.count == 0
+		return photos
 	end
 	
 end
-
