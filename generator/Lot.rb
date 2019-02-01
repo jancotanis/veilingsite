@@ -16,8 +16,8 @@ DESCRIPTION = "Tekst + link"
 MISSING_PHOTO = "./assets/coming-soon.jpg"
 
 # set default encoding and do an encode on the input file from excel to get correct extended characters
-#Encoding.default_external = Encoding::UTF_8
-#Encoding.default_internal = Encoding::UTF_8
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
 # Tab Seperated Values
 class TSV
   attr_reader :filepath
@@ -103,7 +103,6 @@ class LotParser
 				if row[ARTIST] && !row[CONTRIBUTION_NR].empty?
 					photos = find_photos( path, row[CONTRIBUTION_NR] )
 					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE], row[CATEGORY], row[YEAR], row[PRICE], row[DESCRIPTION], photos )
-					puts lot.json
 					@lots << lot
 					cat = row[CATEGORY]
 					cat = "onbekend" if cat.empty?
@@ -131,3 +130,4 @@ class LotParser
 	end
 	
 end
+
