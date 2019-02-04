@@ -46,6 +46,13 @@ class SiteGenerator
 			file( "#{@site}#{file}" ) do |f|
 				f.write t.result( binding )
 			end
+			# copy assets
+			lot.photos.each do |photo|
+				if !File.exists? @site+photo
+					puts "Copy #{photo} to #{@site+photo}"
+					File.binwrite( @site+photo, File.binread( photo ) )
+				end
+			end
 		end
 	end
 
