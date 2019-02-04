@@ -165,7 +165,7 @@ var stylez = [
     }
 ];
 var mapOptions = {
-    zoom: 14,
+    zoom: 15,
     center: latlng,
     scrollwheel: false,
     scaleControl: false,
@@ -175,6 +175,7 @@ var mapOptions = {
     }
 };
 map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+/*
 var geocoder_map = new google.maps.Geocoder();
 var address = 'London';
 geocoder_map.geocode({
@@ -191,8 +192,16 @@ geocoder_map.geocode({
         alert("Geocode was not successful for the following reason: " + status);
     }
 });
+*/
+var marker = new google.maps.Marker({
+	map: map,
+	icon: 'img/core-img/pin.png',
+	position: map.getCenter()
+});
+
 var mapType = new google.maps.StyledMapType(stylez, {
     name: "Grayscale"
 });
 map.mapTypes.set('gMap', mapType);
+
 map.setMapTypeId('gMap');
