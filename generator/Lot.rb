@@ -94,7 +94,7 @@ class LotParser
 	attr_reader :lots, :categories
 
 	def initialize( path, file )
-		tsv = TSV.new( "#{path}#{file}" ) 
+		tsv = TSV.new( file ) 
 		@lots = []
 		@categories = Hash.new { |hash, key| hash[key] = [] }
 		# fields:
