@@ -643,13 +643,13 @@ img {
     .welcome_area {
       height: 350px; } }
   .welcome_area .hero-content h6 {
-    font-size: 18px;
-    color: #787878;
-    margin-bottom: 10px; }
+    font-size: 18px; padding: 4px;
+    color: /*#787878*/rgb(255,255,255,0.9); display: inline;
+    margin-bottom: 10px; background-color:rgb(0,0,0,0.5); }
   .welcome_area .hero-content h2 {
     font-size: 60px;
-    color: #000000;
-    margin-bottom: 50px; }
+    color: rgb(255,255,255,0.9); padding: 10px;
+    margin-bottom: 50px; background-color:rgb(0,0,0,0.5); display: inline;}
     @media only screen and (min-width: 768px) and (max-width: 991px) {
       .welcome_area .hero-content h2 {
         font-size: 48px; } }
