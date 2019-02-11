@@ -28,9 +28,9 @@ class TSV
   def parse
   #,"r:cp850"
     File::open( filepath, "r" ) do |f|
-      headers = f.gets.encode("UTF-8", "Windows-1252").strip.split("\t")
+      headers = f.gets.encode("UTF-8", "Windows-1252").split("\t").map(&:strip)
       f.each do |line|
-        fields = Hash[headers.zip(line.encode("UTF-8", "Windows-1252").chop.split("\t"))]
+        fields = Hash[headers.zip(line.encode("UTF-8", "Windows-1252").chop.split("\t").map(&:strip))]
         yield fields
       end
     end
@@ -80,7 +80,7 @@ class Lot < Record
 	end
 
 	def id
-		"#{@artist}-#{@title}.html"
+		"#{@artist}-#{@title.gsub( /[^0-9A-Za-z.\-]/, '-' )}.html"
 	end
 	
 	def add_photo file
@@ -102,11 +102,11 @@ class LotParser
 			begin
 				if row[ARTIST] && !row[CONTRIBUTION_NR].empty?
 					photos = find_photos( path, row[CONTRIBUTION_NR] )
-					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE], row[CATEGORY], row[YEAR], row[PRICE], row[DESCRIPTION], photos )
+					category = row[CATEGORY].downcase
+					category = "onbekend" if category.empty?
+					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE], category, row[YEAR], row[PRICE], row[DESCRIPTION], photos )
 					@lots << lot
-					cat = row[CATEGORY]
-					cat = "onbekend" if cat.empty?
-					@categories[cat] << lot
+					@categories[category] << lot
 				end
 			rescue
 				puts row
