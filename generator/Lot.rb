@@ -6,6 +6,7 @@ require 'json'
 LOT_NR = "Kavel #"
 CONTRIBUTION_NR = "Inbreng #"
 TITLE = "Titel"
+DETAILS = "Details"
 ARTIST = "Kunstenaar"
 LINK = "Link"
 PRICE = "Prijs €"
@@ -52,15 +53,15 @@ class Record
 end
 
 class Lot < Record
-	attr_reader :lot, :contribution, :artist, :link, :title, :year, :price, :text, :photos, :category
-	def initialize lot, contribution, artist, link, title, category, year, price, text, photos=[]
-	
+	attr_reader :lot, :contribution, :artist, :link, :title, :details, :year, :price, :text, :photos, :category
+	def initialize lot, contribution, artist, link, title, details, category, year, price, text, photos=[]
 		title = "?" if title.empty?
 		@lot = lot
 		@contribution = contribution
 		@artist = artist
 		@link = link
 		@title = title
+		@details = details
 		@category=category
 		@year = year
 		@price = price
@@ -72,6 +73,7 @@ class Lot < Record
 		:artist => artist,
 		:link=>link,
 		:title => title,
+		:details => details,
 		:year => year,
 		:price => price,
 		:text => text,
@@ -104,7 +106,7 @@ class LotParser
 					photos = find_photos( path, row[CONTRIBUTION_NR] )
 					category = row[CATEGORY].downcase
 					category = "onbekend" if category.empty?
-					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE], category, row[YEAR], row[PRICE], row[DESCRIPTION], photos )
+					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE].gsub(/\A"|"\Z/, '').strip, row[DETAILS], category, row[YEAR], row[PRICE], row[DESCRIPTION], photos )
 					@lots << lot
 					@categories[category] << lot
 				end
