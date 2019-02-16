@@ -36,7 +36,7 @@ class SiteGenerator
 			end
 		end
 	end
-
+#(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?
 	def generate_lots
 		t = load_template "lot.html.erb"
 		@db.lots.each_with_index do |lot, i|
@@ -71,6 +71,14 @@ class SiteGenerator
 	def render file
 		t = load_template file
 		t.result( binding )
+	end
+	
+	def auto_link text
+	   pattern = /(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+	   text.gsub( pattern ) do |url| 
+	      url = "https://" + url unless url["http"]
+	      "<a href='#{url}'>#{url}</a>"
+	   end
 	end
 
 	def sanitize_filename(filename)
