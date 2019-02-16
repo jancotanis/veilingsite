@@ -9,7 +9,7 @@ TITLE = "Titel"
 DETAILS = "Details"
 ARTIST = "Kunstenaar"
 LINK = "Link"
-PRICE = "Prijs €"
+PRICE = "Prijs"
 CATEGORY = "Soort"
 YEAR = "Jaartal"
 DESCRIPTION = "Tekst + link"
@@ -19,19 +19,29 @@ MISSING_PHOTO = "./assets/coming-soon.jpg"
 # set default encoding and do an encode on the input file from excel to get correct extended characters
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
+
+
 # Tab Seperated Values
 class TSV
   attr_reader :filepath
   def initialize(filepath)
     @filepath = filepath
+	if (/darwin/ =~ RUBY_PLATFORM) != nil
+    	@encoding = "MacRoman"
+	else
+	    @encoding = "Windows-1252"
+	end
   end
 
   def parse
-  #,"r:cp850"
+  	headers=""
+  	filepath="./assets/Kunstveiling-veilinginput.txt"
     File::open( filepath, "r" ) do |f|
-      headers = f.gets.encode("UTF-8", "Windows-1252").split("\t").map(&:strip)
+      headers = f.gets.encode("UTF-8", @encoding).split("\t").map(&:strip)
+      headers = headers.map{ |x| x[PRICE] ? PRICE : x }
+      puts headers
       f.each do |line|
-        fields = Hash[headers.zip(line.encode("UTF-8", "Windows-1252").chop.split("\t").map(&:strip))]
+        fields = Hash[headers.zip(line.encode("UTF-8", @encoding).chop.split("\t").map(&:strip))]
         yield fields
       end
     end
