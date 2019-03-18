@@ -74,10 +74,14 @@ class SiteGenerator
 	end
 	
 	def auto_link text
-	   pattern = /(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
-	   text.gsub( pattern ) do |url| 
-	      url = "https://" + url unless url["http"]
-	      "<a href='#{url}'>#{url}</a>"
+       if text
+		   pattern = /(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+		   text.gsub( pattern ) do |url| 
+	    	  url = "https://" + url unless url["http"]
+		      "<a href='#{url}'>#{url}</a>"
+		   end
+	   else
+	     ""
 	   end
 	end
 

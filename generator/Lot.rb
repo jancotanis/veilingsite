@@ -125,6 +125,20 @@ class LotParser
 				raise
 			end
 		end
+		compress_lots
+	end
+	
+	def compress_lots
+		skipper = []
+		@categories["overige"] = [] unless @categories["overige"]
+		@categories.each do |category, lots|
+			if lots.count < 5
+				puts "Skipping #{category}"
+				lots.each { |l| @categories["overige"] << l }
+				skipper << category
+			end
+		end
+		skipper.each { |c| @categories.delete c }
 	end
 	
 	def stats
