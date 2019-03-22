@@ -39,7 +39,7 @@ class TSV
     File::open( filepath, "r" ) do |f|
       headers = f.gets.encode("UTF-8", @encoding).split("\t").map(&:strip)
       headers = headers.map{ |x| x[PRICE] ? PRICE : x }
-      puts headers
+      #puts headers
       f.each do |line|
         fields = Hash[headers.zip(line.encode("UTF-8", @encoding).chop.split("\t").map(&:strip))]
         yield fields
