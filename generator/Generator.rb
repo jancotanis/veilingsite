@@ -36,6 +36,22 @@ class SiteGenerator
 			end
 		end
 	end
+	def generate_kavels
+		t = load_template "kavels.html.erb"
+		lots = []
+		@db.lots.each do |l|
+			if l.lot
+				lots[l.lot.to_i] = l if l.lot
+			end
+		end
+		lots.compact!
+		file = "kavels.html"
+		@pageinfo = Page.new( "Kavels", file )
+		puts " Kavels: #{file}"
+		File::open( "#{@site}#{file}", "w" ) do |f|
+			f.write t.result( binding )
+		end
+	end
 #(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?
 	def generate_lots
 		t = load_template "lot.html.erb"
@@ -132,5 +148,6 @@ sg.generate_index
 sg.generate_static ["voorwaarden","about","doel","contact","sponsor"]
 # all categories
 sg.generate_categories
+sg.generate_kavels
 # all lots
 sg.generate_lots
