@@ -41,7 +41,13 @@ class SiteGenerator
 		lots = []
 		@db.lots.each do |l|
 			if l.lot
-				lots[l.lot.to_i] = l if l.lot
+				if lots[l.lot.to_i]
+					puts "* Lot [#{l.lot}] is dubbel"
+					puts "  " + l.id
+					puts "  " + lots[l.lot.to_i].id
+				else
+					lots[l.lot.to_i] = l if l.lot
+				end
 			end
 		end
 		lots.compact!
