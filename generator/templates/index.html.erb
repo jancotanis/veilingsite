@@ -41,25 +41,65 @@
     </div>
     <!-- ##### Top Catagory Area End ##### -->
 
-    <!-- ##### CTA Area Start ##### 
-    <div class="cta-area">
+    <!-- ##### New Arrivals Area Start ##### -->
+    <section class="new_arrivals_area section-padding-80 clearfix">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="cta-content bg-img background-overlay" style="background-image: url(img/bg-img/bg-5.jpg);">
-                        <div class="h-100 d-flex align-items-center justify-content-end">
-                            <div class="cta--text">
-                                <h6>-60%</h6>
-                                <h2>Global Sale</h2>
-                                <a href="#" class="btn essence-btn">Buy Now</a>
-                            </div>
-                        </div>
+                    <div class="section-heading text-center">
+                        <h2>Last minute toevoegingen</h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- ##### CTA Area End ##### -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="popular-products-slides owl-carousel">
+<%last_minutes.each do |lot|%>
+                        <!-- Single Product -->
+                        <div class="single-product-wrapper">
+                            <!-- Product Image -->
+                            <div class="product-img">
+                                <img src="<%=lot.photos[0]%>" alt="">
+                                <!-- Hover Thumb -->
+                                <!--img class="hover-img" src="img/product-img/product-2.jpg" alt=""-->
+                                <!-- Favourite
+                                <div class="product-favourite">
+                                    <a href="#" class="favme fa fa-heart"></a>
+                                </div>
+                                -->
+                                <div class="product-badge new-badge">
+                                    <span>Nieuw</span>
+                                </div>
+                            </div>
+                            <!-- Product Description -->
+                            <div class="product-description">
+                                <span><%=lot.artist%></span>
+                                <a href="<%=sanitize_filename lot.id%>">
+                                    <h6><%=lot.title%></h6>
+                                </a>
+                                <p class="product-price">&euro;<%=lot.price%></p>
+
+                                <!-- Hover Content 
+                                <div class="hover-content">
+                                    <div class="add-to-cart-btn">
+                                        <a href="#" class="btn essence-btn">Add to Cart</a>
+                                    </div>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+<%end%>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### New Arrivals Area End ##### -->
+
 
 <%=render "_sponsor.html.erb"%>
 <%=render "_footer.html.erb"%>

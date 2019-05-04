@@ -12,11 +12,13 @@ class SiteGenerator
 		@dir = template_dir
 		@site = site_dir
 		@categories = @db.categories
+		@last_minutes = db.last_minutes
 		@pageinfo = nil
 	end
 
 	def generate_index
 		file = "index.html"
+		last_minutes = @last_minutes
 		@pageinfo = Page.new( "Lions Club", file )
 		t = load_template "#{file}.erb"
 		puts " File: #{file}"

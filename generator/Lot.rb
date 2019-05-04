@@ -13,6 +13,7 @@ PRICE = "Prijs"
 CATEGORY = "Soort"
 YEAR = "Jaartal"
 DESCRIPTION = "Tekst + link"
+LAST_MINUTE = "Last minute"
 
 MISSING_PHOTO = "./assets/coming-soon.jpg"
 
@@ -103,11 +104,12 @@ end
 
 
 class LotParser
-	attr_reader :lots, :categories
+	attr_reader :lots, :categories, :last_minutes
 
 	def initialize( path, file )
 		tsv = TSV.new( file ) 
 		@lots = []
+		@last_minutes = []
 		@categories = Hash.new { |hash, key| hash[key] = [] }
 		# fields:
 		tsv.parse do |row|
@@ -119,6 +121,9 @@ class LotParser
 					lot = Lot.new( row[LOT_NR], row[CONTRIBUTION_NR], row[ARTIST], row[LINK], row[TITLE].gsub(/\A"|"\Z/, '').strip, row[DETAILS], category, row[YEAR], row[PRICE], row[DESCRIPTION], photos )
 					@lots << lot
 					@categories[category] << lot
+					if row[LAST_MINUTE] == "yes"
+						@last_minutes << lot
+					end
 				end
 			rescue
 				puts row
