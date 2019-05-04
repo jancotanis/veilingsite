@@ -22,25 +22,6 @@
     </section>
     <!-- ##### Welcome Area End ##### -->
 
-    <!-- ##### Top Catagory Area Start ##### -->
-    <div id="veiling-collectie" class="top_catagory_area section-padding-80 clearfix">
-        <div class="container">
-            <div class="row justify-content-center">
-<%categories.each do |category,value|%>
-                <!-- Single Catagory -->                
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url('<%=value.first.photos[0]%>');">
-                        <div class="catagory-content">
-                            <a href="<%=sanitize_filename category%>.html"><%=category%></a>
-                        </div>
-                    </div>
-                </div>
-<%end%>
-            </div>
-        </div>
-    </div>
-    <!-- ##### Top Catagory Area End ##### -->
-
     <!-- ##### New Arrivals Area Start ##### -->
     <section class="new_arrivals_area section-padding-80 clearfix">
         <div class="container">
@@ -99,6 +80,25 @@
         </div>
     </section>
     <!-- ##### New Arrivals Area End ##### -->
+
+    <!-- ##### Top Catagory Area Start ##### -->
+    <div id="veiling-collectie" class="top_catagory_area section-padding-80 clearfix">
+        <div class="container">
+            <div class="row justify-content-center">
+<%categories.each do |category,value|%>
+                <!-- Single Catagory -->                
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="single_catagory_area d-flex align-items-center justify-content-center bg-img" style="background-image: url('<%=value.first.photos[0]%>');">
+                        <div class="catagory-content">
+                            <a href="<%=sanitize_filename category%>.html"><%=category%></a>
+                        </div>
+                    </div>
+                </div>
+<%end%>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Top Catagory Area End ##### -->
 
 
 <%=render "_sponsor.html.erb"%>
